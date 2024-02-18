@@ -67,10 +67,6 @@ type VOD struct {
 	TitleSortName        *string          `json:"titleSortName"`
 }
 
-type Channel struct {
-	ID string `json:"id"`
-}
-
 type Category struct {
 	ID string `json:"id"`
 }

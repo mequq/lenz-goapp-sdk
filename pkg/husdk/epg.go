@@ -72,6 +72,7 @@ func (epg *EPG) Execute(ctx context.Context, req HURequestInterface, resp any) e
 	}
 
 	logger := epg.logger.With("method", "Execute", "ctx", appcontext.LogContext(ctx))
+	logger.Debug("execute request", "url", req.GetPath(), "body", req.GetRequestBody())
 	if epg.epgAddress == nil {
 		logger.Warn("epg address is not defined",
 			ctx, appcontext.LogContext(ctx),
@@ -117,6 +118,9 @@ func (epg *EPG) Execute(ctx context.Context, req HURequestInterface, resp any) e
 		epg.logger.Warn("failed to execute request to hu",
 			"err", err,
 			"ctx", appcontext.LogContext(ctx),
+			"request", request.URL,
+			"body", req.GetRequestBody(),
+			"header", request.Header,
 		)
 		return errors.Join(err, ErrorFaildToGetResponse)
 	}
@@ -166,6 +170,10 @@ func (epg *EPG) Execute(ctx context.Context, req HURequestInterface, resp any) e
 		)
 
 		return nil
+	}
+
+	if huErr.RetCode == "-2" {
+		return ErrorUserNeedToRelogin
 	}
 
 	logger.Warn("hu request failed",

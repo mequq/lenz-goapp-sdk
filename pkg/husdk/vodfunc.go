@@ -3,6 +3,8 @@ package husdk
 import (
 	"errors"
 	"fmt"
+	"math"
+
 	"strconv"
 	"strings"
 	"time"
@@ -87,6 +89,12 @@ func (v VOD) ParentID() (string, error) {
 	if !v.HasParent() {
 		return "", ErrorClientIPAddressNotValid
 	}
+	for _, vod := range v.FatherVODList {
+		if vod.VODID != "15610" {
+			return vod.VODID, nil
+		}
+	}
+
 	return v.FatherVODList[0].GETID(), nil
 }
 
@@ -249,10 +257,20 @@ func (v VOD) HaveSubtitle() bool {
 
 // get avarage score of content
 func (v VOD) GetScore() float64 {
+
+	// calc rating old fashion
+	rateCount, err1 := strconv.Atoi(v.StaticTimes)
+	rateSum, err2 := strconv.Atoi(v.ScoreSum)
+	if err1 == nil && err2 == nil && rateCount > 0 {
+		return math.Round(float64(rateSum)/float64(rateCount)*10.0) / 10.0
+
+	}
+	// else calc rating new fashion
 	score, err := strconv.ParseFloat(v.AverageScore, 64)
 	if err != nil {
 		return 0
 	}
+
 	return score
 }
 
@@ -263,6 +281,31 @@ const (
 	SERIESTYPE_ONE_LEVEL SeriesType = "OneLevel"
 	SERIESTYPE_TWO_LEVEL SeriesType = "TwoLevel"
 )
+
+// Favorited
+func (v VOD) Favorite() bool {
+	switch v.IsFavorited {
+	case "0":
+		return false
+	case "1":
+		return true
+	default:
+		return false
+	}
+}
+
+// Get Downloadable
+func (v VOD) Downloadable() bool {
+	if v.Mediafiles == nil || len(v.Mediafiles) < 1 {
+		return false
+	}
+	return true
+}
+
+// get share url
+func (v VOD) GetShareURL(baseUrl string) string {
+	return fmt.Sprintf("%s را ببینید\n%s/video/%s", v.Name, baseUrl, v.ID)
+}
 
 // get series Type
 func (v VOD) GetSeriesType() SeriesType {
@@ -278,4 +321,98 @@ func (v VOD) GetSeriesType() SeriesType {
 		return SERIESTYPE_UNKNOWN
 	}
 
+}
+
+// Get ID
+func (v VOD) GETINTID() (id int, err error) {
+	return strconv.Atoi(v.ID)
+}
+
+// get Content Rated
+func (v VOD) GetRated() string {
+	switch v.Ratingid {
+
+	case "4":
+		return "7"
+	case "6":
+		return "12"
+	case "8":
+		return "16"
+	case "9":
+		return "18"
+	default:
+		return ""
+	}
+}
+
+// get Pictures
+func (v VOD) GetPictures() *Picture {
+	if v.Picture == nil {
+		return nil
+	}
+	if v.Picture.BackGround == nil {
+		if v.Picture.Deflate != nil {
+			v.Picture.BackGround = v.Picture.Deflate
+		} else if v.Picture.Icon != nil {
+			v.Picture.BackGround = v.Picture.Icon
+		} else if v.Picture.Still != nil {
+			v.Picture.BackGround = v.Picture.Still
+		} else if v.Picture.Title != nil {
+			v.Picture.BackGround = v.Picture.Title
+		} else if v.Picture.AD != nil {
+			v.Picture.BackGround = v.Picture.AD
+		} else if v.Picture.Draft != nil {
+			v.Picture.BackGround = v.Picture.Draft
+		} else if v.Picture.Channelpic != nil {
+			v.Picture.BackGround = v.Picture.Channelpic
+		} else if v.Picture.BlackWhite != nil {
+			v.Picture.BackGround = v.Picture.BlackWhite
+		} else if v.Picture.ChanName != nil {
+			v.Picture.BackGround = v.Picture.ChanName
+		} else if v.Picture.Other != nil {
+			v.Picture.BackGround = v.Picture.Other
+		}
+	}
+	if v.Picture.Poster == nil {
+		if v.Picture.Icon != nil {
+			v.Picture.Poster = v.Picture.Icon
+		} else if v.Picture.Still != nil {
+			v.Picture.Poster = v.Picture.Still
+		} else if v.Picture.Title != nil {
+			v.Picture.Poster = v.Picture.Title
+		} else if v.Picture.AD != nil {
+			v.Picture.Poster = v.Picture.AD
+		} else if v.Picture.Draft != nil {
+			v.Picture.Poster = v.Picture.Draft
+		} else if v.Picture.Channelpic != nil {
+			v.Picture.Poster = v.Picture.Channelpic
+		} else if v.Picture.BlackWhite != nil {
+			v.Picture.Poster = v.Picture.BlackWhite
+		} else if v.Picture.ChanName != nil {
+			v.Picture.Poster = v.Picture.ChanName
+		} else if v.Picture.Other != nil {
+			v.Picture.Poster = v.Picture.Other
+		}
+	}
+
+	if v.Picture.Icon == nil {
+		if v.Picture.Poster != nil {
+			v.Picture.Icon = v.Picture.Poster
+		} else if v.Picture.BackGround != nil {
+			v.Picture.Icon = v.Picture.BackGround
+		} else if v.Picture.Deflate != nil {
+			v.Picture.Icon = v.Picture.Deflate
+		} else if v.Picture.Draft != nil {
+			v.Picture.Icon = v.Picture.Draft
+		} else if v.Picture.Channelpic != nil {
+			v.Picture.Icon = v.Picture.Channelpic
+		} else if v.Picture.BlackWhite != nil {
+			v.Picture.Icon = v.Picture.BlackWhite
+		} else if v.Picture.ChanName != nil {
+			v.Picture.Icon = v.Picture.ChanName
+		} else if v.Picture.Other != nil {
+			v.Picture.Icon = v.Picture.Other
+		}
+	}
+	return v.Picture
 }

@@ -20,6 +20,8 @@ const (
 	REQUEST_IS_GUEST
 	REQUEST_IS_AUTH
 	REQUEST_AUTH_ERR
+	REQUEST_IS_IRAN
+	REQUEST_IS_MTNI
 )
 
 type AppContext struct {
@@ -77,6 +79,16 @@ func (a *AppContext) LogValue() slog.Value {
 	// authErr
 	if a.ctx.Value(REQUEST_AUTH_ERR) != nil {
 		attrs = append(attrs, slog.Any("authErr", a.ctx.Value(REQUEST_AUTH_ERR)))
+	}
+
+	// isIran
+	if a.ctx.Value(REQUEST_IS_IRAN) != nil {
+		attrs = append(attrs, slog.Bool("isIran", a.ctx.Value(REQUEST_IS_IRAN).(bool)))
+	}
+
+	// isMTNI
+	if a.ctx.Value(REQUEST_IS_MTNI) != nil {
+		attrs = append(attrs, slog.Bool("isMTNI", a.ctx.Value(REQUEST_IS_MTNI).(bool)))
 	}
 
 	attrs = append(attrs, slog.Any("err", a.ctx.Err()))
