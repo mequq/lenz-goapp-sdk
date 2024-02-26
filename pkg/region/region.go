@@ -13,7 +13,8 @@ import (
 type Country string
 
 const (
-	OutOfIranCatId string = "8010"
+	CopyrightedError string = ""
+	OutOfIranCatId   string = "8010"
 )
 
 type ChannelState struct {
@@ -148,6 +149,13 @@ func GetLiveCopyrightDetail(channelId string, ip string) (bool, bool) {
 }
 
 func IsChannelAvailable(channelId string) bool {
+	isAvailable := false
+	defer func() {
+		if r := recover(); r != nil {
+			isAvailable = false
+			fmt.Println("caught panic:", r)
+		}
+	}()
 	response, err := http.Get(os.Getenv("LIVE_STATE_DOMAIN") + "/api/v1/admin/live-state/channel/" + channelId)
 	if err != nil {
 		return false
@@ -165,5 +173,6 @@ func IsChannelAvailable(channelId string) bool {
 		return false
 	}
 
-	return channelState.Available
+	isAvailable = channelState.Available
+	return isAvailable
 }
