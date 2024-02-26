@@ -176,3 +176,30 @@ func IsChannelAvailable(channelId string) bool {
 	isAvailable = channelState.Available
 	return isAvailable
 }
+
+func GetChannelStates(channels []string) ([]ChannelState, error) {
+	idList := ""
+	for _, ch := range channels {
+		idList = idList + ch + ","
+	}
+	idList = idList[:len(idList)-1]
+
+	response, err := http.Get(os.Getenv("LIVE_STATE_DOMAIN") + "/api/v1/admin/live-state/channel?ids=" + idList)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var channelList []ChannelState
+	err = json.Unmarshal(body, &channelList)
+	if err != nil {
+		return nil, err
+	}
+
+	return channelList, nil
+}
