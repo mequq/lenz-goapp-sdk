@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils"
 )
 
 type VodType string

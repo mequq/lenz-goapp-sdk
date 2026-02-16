@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/appcontext"
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/httperror"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/appcontext"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/httperror"
 )
 
 func (m *GorillaMuxMiddleware) RecoverMiddleware(next http.Handler) http.Handler {

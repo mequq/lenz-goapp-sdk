@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/appcontext"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/appcontext"
 )
 
 type StatusRecorder struct {

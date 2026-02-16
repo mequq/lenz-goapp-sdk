@@ -3,7 +3,7 @@ package httpmiddleware
 import (
 	"net/http"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/appcontext"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/appcontext"
 )
 
 // NewGorillaMuxServer creates a new HTTP server and set up all routes.

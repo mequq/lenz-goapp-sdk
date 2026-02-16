@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	region "git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/regiondetector"
 	"io"
 	"net/http"
 	"os"
+
+	region "github.com/mequq/lenz-goapp-sdk/pkg/utils/regiondetector"
 )
 
 type Country string

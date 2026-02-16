@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/httperror"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/httperror"
 
 	"net/http"
 	"strings"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/appcontext"
+	"github.com/mequq/lenz-goapp-sdk/pkg/utils/appcontext"
 
 	"github.com/golang-jwt/jwt/v5"
 )
