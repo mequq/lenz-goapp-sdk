@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"net/url"
 
-	region "git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/regiondetector"
+	region "github.com/mequq/lenz-goapp-sdk/pkg/utils/regiondetector"
 )
 
 type GorillaMuxMiddleware struct {

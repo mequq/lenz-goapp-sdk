@@ -7,7 +7,7 @@ import (
 	"io"
 	"log/slog"
 
-	"git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/appcontext"
+	"utils/appcontext"
 
 	"net"
 	"net/http"

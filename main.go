@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	region "git.abanppc.com/lenz-public/lenz-goapp-sdk/pkg/utils/regiondetector"
+	region "github.com/mequq/lenz-goapp-sdk/pkg/utils/regiondetector"
 )
 
 // func main() {
